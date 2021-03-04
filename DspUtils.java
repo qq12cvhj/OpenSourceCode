@@ -76,6 +76,7 @@ public class DspUtils {
         }
     }
 
+    //分帧算法
     private static INDArray frame(INDArray input, int frameLength, int hopLength, int axis) {
         if (axis == -1) {
             axis = input.rank() - 1;
@@ -138,6 +139,7 @@ public class DspUtils {
         return input;
     }
 
+    //转换double类型为float类型
     public static float[] dArray2fArray(double[] doubles) {
         int len = doubles.length;
         float[] floats = new float[len];
@@ -147,6 +149,7 @@ public class DspUtils {
         return floats;
     }
 
+    
     private static INDArray pad_and_partition(INDArray tensor, int length) {
         int oldsize = (int) (tensor.shape()[3]);
         int newSize = (int) Math.ceil((double) oldsize / length) * length;
@@ -207,7 +210,7 @@ public class DspUtils {
         return input;
     }
 
-
+    //逆短时傅里叶变换
     private static INDArray inverseStft(int winLength, INDArray stftTensor) {
         int pad = (int) (winLength / 2 + 1 - stftTensor.shape()[1]);
         int[][] padLengths = new int[stftTensor.rank()][2];
@@ -216,8 +219,6 @@ public class DspUtils {
         //执行真正的istft算法
         return istft(stftTensor, 4096, 1024);
     }
-
-    //仿照librosa的istft算法
 
     /**
      * @param stftTensor 输入矩阵
@@ -338,6 +339,7 @@ public class DspUtils {
         }
     }
 
+    //提取背景音使用，获得输出张量Tensors
     public static INDArray[] getOutputWavTensors(INDArray[] inputTensors, INDArray stftTensor, int stftSize) {
         INDArray mask0 = inputTensors[0];
         INDArray mask1 = inputTensors[1];
